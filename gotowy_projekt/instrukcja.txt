@@ -1,0 +1,4 @@
+Instrukcja:
+1 Połącz się z bazą danych, np. za pomocą XAMPP.
+2 Odpal plik skrypt_all.sql z foldery skrypty na worbench by mieć dane wstępne.
+3 Gotowe!
