@@ -74,7 +74,7 @@ def nauczyciel_dla_klasy(k):
     if lista:
         return lista[0][0]  # Zwraca imię i nazwisko nauczyciela
     else:
-        return None  # Jeśli nauczyciela nie ma dla danej klasy
+        return False  # Jeśli nauczyciela nie ma dla danej klasy
 
 
 # Główny program
@@ -125,21 +125,25 @@ while True:
 
         elif odp == "seea":
             odpw1 = input("Podaj jaka klase chcesz zobaczyc >>> ").strip().upper()
-            klasa_id = jakie_sa_klasy(odpw1)
-            if nauczyciel_dla_klasy(odpw1) == None:
-                nauczyciel = "Nie przydzielono nauczyciela do klasy"
+
+            if jakie_sa_klasy(odpw1):
+
+                if nauczyciel_dla_klasy(odpw1) == None:
+                    nauczyciel = "Nie przydzielono nauczyciela do klasy"
+                else:
+                    nauczyciel = nauczyciel_dla_klasy(odpw1)  # pobranie nauczyciela
+
+                    print(f"Wychowawca klasy: {nauczyciel}")
+
+                    lista = baza_danych_pobranie(
+                        "SELECT CONCAT(TU.Uczen_Imie, ' ', TU.Uczen_Nazwisko) AS Uczen FROM Tablica_Klasa AS TK INNER JOIN Tablica_Uczen AS TU ON TK.Klasa_ID = TU.Uczen_Klucz_Obcy_Klasa WHERE TK.Klasa_Nazwa = %s;",
+                        (odpw1,))
+
+                    # Iteracja po wszystkich uczniach i wyświetlanie indeksu oraz imienia i nazwiska
+                    for idx, e in enumerate(lista, start=1):  # 'start=1' zaczyna numerowanie od 1
+                        print(f"{idx}. {e[0]}")
             else:
-                nauczyciel = nauczyciel_dla_klasy(odpw1)  # pobranie nauczyciela
-            if klasa_id:
-                print(f"Wychowawca klasy: {nauczyciel}")
-
-                lista = baza_danych_pobranie(
-                    "SELECT CONCAT(TU.Uczen_Imie, ' ', TU.Uczen_Nazwisko) AS Uczen FROM Tablica_Klasa AS TK INNER JOIN Tablica_Uczen AS TU ON TK.Klasa_ID = TU.Uczen_Klucz_Obcy_Klasa WHERE TK.Klasa_Nazwa = %s;",
-                    (odpw1,))
-
-                # Iteracja po wszystkich uczniach i wyświetlanie indeksu oraz imienia i nazwiska
-                for idx, e in enumerate(lista, start=1):  # 'start=1' zaczyna numerowanie od 1
-                    print(f"{idx}. {e[0]}")
+                print("Nie ma takiej klasy")
         elif odp == "dels":
             odpw1 = input("Podaj imię ucznia >>> ").strip().capitalize()
             odpw2 = input("Podaj nazwisko ucznia >>> ").strip().capitalize()
