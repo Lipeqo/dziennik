@@ -43,6 +43,7 @@ def komendy():
     print("seea - zobacz cala klase")
     print("dels - usun ucznia")
     print("delt - usun nauczyciela")
+    print("delc - usun klase")
 
 
 # Funkcja sprawdzająca, czy klasa istnieje w bazie
